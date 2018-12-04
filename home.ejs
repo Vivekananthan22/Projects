@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            #logo {
+                height: 100%;
+                width: 150px;
+                background: #fff;
+            }
+            .logo-container{
+                height: 20vh;
+                background: rgb(224, 4, 4);
+            }
+            .name{
+                margin-top:9vh;
+                font-size:30px;
+                color:white;
+                
+                font-weight:600;
+            }
+            body{
+                background: rgb(146, 88, 204);
+            }
+            .rest-container{
+                
+                background:rgb(247, 4, 4);
+                border-radius:8px;
+                margin:10px;
+            }
+            .view-button{
+                background: rgb(241, 236, 236);
+                border:none;
+                padding:8px 10px;
+                border-radius:5px;
+                cursor: pointer;
+                color: red;
+            }
+            .table{
+                background: #fff;
+                margin-bottom:0px;
+            }
+            
+        </style>
+    </head>
+    <body>
+
+        <div class="logo-container d-flex justify-content-center">
+                <img id="logo" src="http://travelpedia.com.br/wp-content/uploads/2018/01/icon-food-and-beverage.png">
+                <span class="name align-middle">Goodie Foodie</span>
+        </div>
+        <div class="d-flex justify-content-center" style="padding:15px;background:#fff;">
+            <div class="form-row" style="width:80%;">
+                <div class="col">
+                    <select id="city-search" class="form-control">
+                        <% cities.forEach(function(t) { %>
+                            <option value="<%= t %>"> <%= t %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col">
+                    <input id="search-box" type="text" class="form-control" placeholder="Restaurent Name">
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="main-container container" style="text-align:center;">
+            <% restaurent.forEach(function(t){ %>
+                <div class="rest-container" >
+                    <div class="row" style="padding:10px;">
+                        <div class="col-md-12">
+                            <table class="table table-sm table-borderless">
+                                <tbody>
+                                    <tr style="border-bottom:3px solid rgb(250, 247, 247);">
+                                        <td class="resName" ><%= t.name %></td>
+                                        <td class="city"><%= t.city %></td>
+                                    </tr>
+                                    <tr>
+                                        <td><%= t.type %></td>
+                                        <td style="text-align:right;">Rating : <%= t.rating %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Accepts Cash & Online Payments</td>
+                                    </tr>
+                                    <tr>
+                                        <td> </td>
+                                        <td style="text-align:right;padding:0px 5px 5px 0px;"><a class="view-button" href="/restaurents/<%= t.name %>">View Restaurent</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function(){
+                $("#search-box").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $(".rest-container").filter(function() {
+                        console.log($(this).children('div').children('div').children('table').children('tbody').children('tr').children('.resName').text().toLowerCase())
+                        $(this).toggle($(this).children('div').children('div').children('table').children('tbody').children('tr').children('.resName').text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+            $('#city-search').on('change', function() {
+                var city = $('#city-search').val().trim();
+                $('.rest-container').each(function(i, obj){
+                    //console.log($(this).children('div').children('div').children('table').children('tbody').children('tr').children('.city').text().trim() +" "+ city);
+                    if($(this).children('div').children('div').children('table').children('tbody').children('tr').children('.city').text().trim() == city){
+                        $(this).css('display','block');
+                    }
+                    else{
+                        $(this).css('display','none');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
